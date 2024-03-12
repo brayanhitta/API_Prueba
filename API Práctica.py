@@ -20,6 +20,16 @@ def add_task():
     tasks.append(new_task)
     return jsonify({'message': 'Tarea agregada', 'task': new_task}), 201
 
+# Endpoint para eliminar una tarea por su ID   
+@app.route('/tasks/<int:task_id>', methods=['DELETE'])
+def delete_task(task_id):
+    task_to_delete = next((task for task in tasks if task['id'] == task_id), None)
+    
+    if task_to_delete:
+        tasks.remove(task_to_delete)
+        return jsonify({'message': 'Tarea eliminada', 'task': task_to_delete}), 200
+    else:
+        return jsonify({'message': 'Tarea no encontrada'}), 404
 # Iniciar la aplicación
 if __name__ == '__main__':
     app.run(debug=True)
